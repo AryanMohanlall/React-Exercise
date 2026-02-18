@@ -12,7 +12,7 @@ const Login: React.FC = () => {
   const handleSignIn = async () => {
     try {
       const values = await form.validateFields();
-      if(values.email === "aryan@gmail.com" && values.password === "1"){
+      if(values.email === "dog@gmail.com" && values.password === "1"){
         navigate('/videos')
       }
     } catch (error) {
