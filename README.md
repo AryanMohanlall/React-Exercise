@@ -1,2 +1,6 @@
 # React-Exercise
-Repo to learn React and ant design
+Repo to learn:
+- React
+- Ant design
+- Providers
+- Redux

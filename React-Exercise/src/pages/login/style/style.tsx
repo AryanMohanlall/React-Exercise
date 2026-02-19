@@ -8,6 +8,7 @@ export const useStyles = createStyles(({ css, token }) => ({
     min-height: 100vh;
     background-color: #141414;
     width: 100vw;
+    overflow: hidden;
   `,
   formCard: css`
     width: 100%;

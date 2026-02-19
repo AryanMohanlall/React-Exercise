@@ -9,10 +9,29 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const hash = (str: string): string => {
+      return str.split('').reverse().join('');
+  };
+
+
   const handleSignIn = async () => {
     try {
       const values = await form.validateFields();
+      if(values.email === "aryan@gmail.com" && values.password === "2"){
+        localStorage.setItem('email', values.email);
+        localStorage.setItem('password', values.password);
+        localStorage.setItem('user_role', 'Admin');
+        localStorage.setItem('auth_token', hash(values.email));
+        localStorage.setItem('isLoggedIn', "true");
+        navigate('/settings')        
+      }
+
       if(values.email === "dog@gmail.com" && values.password === "1"){
+        localStorage.setItem('email', values.email);
+        localStorage.setItem('password', values.password);
+        localStorage.setItem('user_role', 'Client')
+        localStorage.setItem('auth_token', hash(values.email));
+        localStorage.setItem('isLoggedIn', 'true');
         navigate('/videos')
       }
     } catch (error) {

@@ -1,57 +1,37 @@
-import VideoCard from '../../components/video';
+import { useEffect } from 'react';
+import { Row, Col, Spin, Empty } from 'antd';
+import { useVideoState, useVideoActions } from '../../providers/VideoProvider';
+import VideoCard from '../../components/video/';
 
 const Home = () => {
-    const videos = [
-        {
-            id: "yhQjnDClhKA",
-            src: "https://img.youtube.com", 
-            title: "The Great White's Breach",
-            description: "Witness the raw power of a Great White shark hunting off the coast of South Africa."
-        },
-        {
-            id: "fMxZyTJtYFM",
-            src: "https://img.youtube.com",
-            title: "Bioluminescent Night Tides",
-            description: "A mesmerizing display of neon blue waves caused by glowing phytoplankton."
-        },
-        {
-            id: "X6jj-3adTCE",
-            src: "https://img.youtube.com",
-            title: "Master of Disguise",
-            description: "Watch a Mimic Octopus seamlessly blend into its coral reef environment."
-        }
-    ];
+  const { videos, loading, error } = useVideoState();
+  const { getVideos } = useVideoActions();
 
-    const handleClick = (id: string) => {
-        window.open(`https://www.youtube.com/${id}`, '_blank');
-    };
+  useEffect(() => {
+    if(videos?.length === 0 || !videos) getVideos();
+  }, []);
 
-    return (
-        <div style={{ 
-            display: "flex", 
-            flexDirection: "row", 
-            gap: "20px", 
-            flexWrap: "wrap",
-            padding: "20px",
-            justifyContent: "center" 
-        }}>
-            {videos.map((v) => (
-                <VideoCard 
-                    key={v.id}
-                    src={v.src}
-                    title={v.title}
-                    description={v.description}
-                    id={v.id}
-                    onClick={handleClick}
-                />
-            ))}
-        </div>
-    );
+  if (loading) return <div style={{ textAlign: 'center', padding: '50px' }}><Spin size="large" /></div>;
+  
+  if (error) return <div style={{ color: 'white', textAlign: 'center' }}>Error loading videos.</div>;
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <Row gutter={[16, 24]} justify="center">
+        {videos?.length ? (
+          videos.map((video) => (
+            <Col key={video.id}>
+              <VideoCard 
+              {...video}
+              onClick={(link) => window.open(link, '_blank')}              />
+            </Col>
+          ))
+        ) : (
+          <Empty description={<span style={{color: '#fff'}}>No videos found</span>} />
+        )}
+      </Row>
+    </div>
+  );
 };
 
 export default Home;
-/*
-+---------+
-|         |
-+---------+
- */

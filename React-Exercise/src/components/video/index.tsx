@@ -4,18 +4,21 @@ import { Avatar, Card } from 'antd';
 const { Meta } = Card;
 
 interface VideoProps {
-  src: string;
+  img: string;
   title: string;
   description: string;
   avatar?: string;
   id: string;
+  link: string;
   onClick?: (id: string) => void; 
 }
 
-const VideoCard: React.FC<VideoProps> = ({ src, title, description, avatar, id, onClick }) => (
+const VideoCard: React.FC<VideoProps> = ({ img, title, description, avatar, id, link, onClick }) => (
   <Card
+    data-video-link={link}
     hoverable
-    onClick={() => onClick?.(id)} 
+    id={id}
+    onClick={() => onClick?.(link)} 
     style={{ 
       width: 300,
       background: 'rgba(255, 255, 255, 0.2)', 
@@ -29,7 +32,7 @@ const VideoCard: React.FC<VideoProps> = ({ src, title, description, avatar, id, 
       <img
         draggable={false}
         alt={title}
-        src={src}
+        src={img}
         style={{ borderRadius: '16px 16px 0 0' }}
       />
     }
@@ -37,7 +40,10 @@ const VideoCard: React.FC<VideoProps> = ({ src, title, description, avatar, id, 
     <Meta
       avatar={<Avatar src={avatar || "https://api.dicebear.com"} />}
       title={<span style={{ color: '#fff' }}>{title}</span>}
-      description={<span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>{description}</span>}
+      description={<span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>{description}
+      <br></br>
+      <label>id : {id}</label>
+      </span>}
     />
   </Card>
 );
