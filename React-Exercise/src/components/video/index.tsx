@@ -1,9 +1,10 @@
 import React from 'react';
 import { Avatar, Card } from 'antd';
+import type { IVideo } from '../../providers/VideoProvider/context';
 
 const { Meta } = Card;
 
-interface VideoProps {
+/* interface VideoProps {
   img: string;
   title: string;
   description: string;
@@ -11,9 +12,9 @@ interface VideoProps {
   id: string;
   link: string;
   onClick?: (id: string) => void; 
-}
+} */
 
-const VideoCard: React.FC<VideoProps> = ({ img, title, description, avatar, id, link, onClick }) => (
+const VideoCard: React.FC<IVideo> = ({ img, title, description, avatar, id, link, onClick }) => (
   <Card
     data-video-link={link}
     hoverable

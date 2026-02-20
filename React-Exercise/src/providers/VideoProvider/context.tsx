@@ -7,6 +7,7 @@ export interface IVideo{
     description: string;
     avatar?: string;
     id: string;
+    link: string;
     onClick?: (id: string) => void; 
 }
 
