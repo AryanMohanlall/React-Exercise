@@ -72,7 +72,10 @@ export const videoReducer = handleActions<IVideoStateContext, any>(
         }),
         [VideoActionEnums.deleteVideoSuccess]: (state, action: Action<IVideoStateContext>) => ({
             ...state,
-            ...action.payload
+            loading: false,
+            success: true,
+            error: false,
+            videos: state.videos.filter((video) => video.id !== action.payload.id)
         }),
         [VideoActionEnums.deleteVideoError]: (state, action: Action<IVideoStateContext>) => ({
             ...state,

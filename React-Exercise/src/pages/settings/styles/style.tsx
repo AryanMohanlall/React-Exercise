@@ -1,12 +1,15 @@
 import { createStyles } from 'antd-style';
 
 export const useStyles = createStyles(({ token, css }) => ({
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '70vh',
-  },
+  container: css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    flexDirection: row;
+    gap: 40px;
+  `,
+
   card: css`
     width: 100%;
     max-width: 600px;
@@ -16,12 +19,14 @@ export const useStyles = createStyles(({ token, css }) => ({
     border-radius: ${token.borderRadiusLG}px !important;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   `,
-  formLabel: {
-    color: `${token.colorWhite} !important`,
-  },
-  submitBtn: {
-    borderRadius: token.borderRadiusSM,
-    height: 40,
-    marginTop: 20,
-  }
+
+  formLabel: css`
+    color: ${token.colorWhite} !important;
+  `,
+
+  submitBtn: css`
+    border-radius: ${token.borderRadiusSM}px;
+    height: 40px;
+    margin-top: 20px;
+  `
 }));

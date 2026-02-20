@@ -88,9 +88,9 @@ export const deleteVideoLoading = createAction<IVideoStateContext>(
     () => ({ loading: true, success: false, error: false })
 );
 
-export const deleteVideoSuccess = createAction<IVideoStateContext>(
+export const deleteVideoSuccess = createAction<IVideoStateContext, string>(
     VideoActionEnums.deleteVideoSuccess,
-    () => ({ loading: false, success: true, error: false })
+    (id: string) => ({ loading: false, success: true, error: false, id})
 );
 
 export const deleteVideoError = createAction<IVideoStateContext>(

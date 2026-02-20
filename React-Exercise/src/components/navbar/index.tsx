@@ -2,11 +2,15 @@ import { Menu, Button } from 'antd';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { HomeOutlined, InfoCircleOutlined, LoginOutlined, LogoutOutlined, SettingOutlined } from '@ant-design/icons';
 import { useStyles } from './style/style';
+import Search from 'antd/es/input/Search';
+import { useVideoActions, useVideoState } from '../../providers/VideoProvider';
 
 const Navbar = () => {
   const { styles } = useStyles();
   const location = useLocation();
   const navigate = useNavigate();
+  const { getVideo } = useVideoActions();
+  const { video } = useVideoState();
 
   const isAdmin = localStorage.getItem('user_role') === 'Admin';
 
@@ -15,7 +19,23 @@ const Navbar = () => {
     navigate('/');
   };
 
+  const handleSearch = (value : string)=>{
+    getVideo(value);
+  }
+
   const items = [
+    {
+      key: 'search',
+      label: (
+        <Search
+          placeholder="Search videos"
+          onSearch={handleSearch}
+          enterButton
+          style={{ width: 250 }}
+        />
+      ),
+    },
+
     {
       key: '/videos',
       icon: <HomeOutlined />,

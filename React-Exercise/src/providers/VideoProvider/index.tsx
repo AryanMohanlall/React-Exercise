@@ -37,12 +37,30 @@ export const VideoProvider = ({children} : {children : React.ReactNode}) => {
         };
 
         const deleteVideo = (id: string) => {
-            //dispatch(deleteVideoSuccess(id)); 
+            dispatch(deleteVideoSuccess(id)); 
+        };
+        
+        const getVideo = async (str: string) => {
+            dispatch(getVideoLoading());
+            instance.get(`/videos/search?query=${str}`)
+                .then((response) => {
+                const mappedVideos: IVideo[] = response.data.videos.map((item: any) => ({
+                    img: item.image,
+                    id: item.id.toString(),
+                    title: `Video by ${item.user.name}`,
+                    description: `Duration: ${item.duration} seconds`,
+                    avatar: item.image,
+                    link: item.url
+                }));
+                    dispatch(getVideoSuccess(mappedVideos[0]));
+                })
+                .catch((error) => {
+                    console.log(error);
+                    dispatch(getVideoError());
+                });
         };
         
         const postVideo = async (video: IVideo) => { console.log("", video); };
-        const getVideo = async (id: string) => { console.log("", id); };
-
     return(
         <VideoStateContext.Provider value={state}>
             <VideoActionContext.Provider value={{getVideos, postVideo, getVideo, updateVideo, deleteVideo}}>

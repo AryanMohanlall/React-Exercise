@@ -1,19 +1,21 @@
 import React from 'react';
 import { Button, Form, Input, Select, Space, Card, Typography, message } from 'antd';
-import { LockOutlined, SaveOutlined } from '@ant-design/icons';
+import { DeleteOutlined, LockOutlined, SaveOutlined } from '@ant-design/icons';
 import { useStyles } from './styles/style';
-import { useVideoActions, useVideoState } from '../../providers/VideoProvider'; // Added imports
+import { useVideoActions, useVideoState } from '../../providers/VideoProvider';
 
 const { Title } = Typography;
 
 const Settings: React.FC = () => {
   const { styles } = useStyles();
-  const [form] = Form.useForm();
+  const [updateForm] = Form.useForm();
+  const [deleteForm] = Form.useForm();
   
   const { videos } = useVideoState();
   const { updateVideo } = useVideoActions();
+  const { deleteVideo } = useVideoActions();
 
-  const onFinish = (values: any) => {
+  const onFinishUpdate = (values: any) => {
     const { videoId, property, value } = values;
 
     const existingVideo = videos?.find(v => v.id === videoId);
@@ -34,8 +36,27 @@ const Settings: React.FC = () => {
 
     updateVideo(updatedData);
     message.success(`Updated ${property} successfully!`);
-    form.resetFields();
+    updateForm.resetFields();
   };
+
+  const onFinishDelete = (values: any) => {
+       const { videoIdDelete, value} = values;
+
+       const existingVideo = videos?.find(v => v.id === videoIdDelete);
+
+       if (!existingVideo) {
+         return message.error('Video ID not found!');
+       }
+
+      if(values.passwordDelete !== localStorage.getItem('password')){
+          message.error(`Incorrect password`);
+          return;
+      }
+
+      deleteVideo(existingVideo.id);
+      message.success(`Deleted video successfully!`);
+      deleteForm.resetFields();
+  }
 
   return (
     <div className={styles.container}>
@@ -44,7 +65,7 @@ const Settings: React.FC = () => {
           Video Update
         </Title>
 
-        <Form form={form} layout="vertical" onFinish={onFinish} requiredMark={false}>
+        <Form form={updateForm} layout="vertical" onFinish={onFinishUpdate} requiredMark={false}>
           <Form.Item
             label={<span className={styles.formLabel}>Video ID</span>}
             name="videoId"
@@ -82,6 +103,38 @@ const Settings: React.FC = () => {
             </Button>
           </Form.Item>
         </Form>
+      </Card>
+
+
+
+      <Card className={styles.card}>
+        <Title level={3} style={{ color: '#fff', textAlign: 'center', marginBottom: 30 }}>
+          Video Delete
+        </Title>
+      <Form form={deleteForm} layout="vertical" onFinish={onFinishDelete} requiredMark={false}>
+          <Form.Item
+            label={<span className={styles.formLabel}>Video ID</span>}
+            name="videoIdDelete"
+            rules={[{ required: true, message: 'Please input a Video ID' }]}
+          >
+
+            <Input placeholder="Enter the ID of the video to delete" />
+          </Form.Item>
+
+          <Form.Item 
+            label={<span className={styles.formLabel}>Confirm Password</span>} 
+            name="passwordDelete" 
+            rules={[{ required: true}]}
+          >
+            <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block className={styles.submitBtn} icon={<DeleteOutlined />}>
+              Delete
+            </Button>
+          </Form.Item>
+      </Form>
       </Card>
     </div>
   );
