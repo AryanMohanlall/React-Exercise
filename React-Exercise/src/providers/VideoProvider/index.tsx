@@ -60,7 +60,10 @@ export const VideoProvider = ({children} : {children : React.ReactNode}) => {
                 });
         };
         
-        const postVideo = async (video: IVideo) => { console.log("", video); };
+        const postVideo = async (video: IVideo) => {
+            dispatch(postVideoLoading());
+            dispatch(postVideoSuccess(video));
+        };
     return(
         <VideoStateContext.Provider value={state}>
             <VideoActionContext.Provider value={{getVideos, postVideo, getVideo, updateVideo, deleteVideo}}>

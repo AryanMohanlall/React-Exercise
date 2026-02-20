@@ -2,7 +2,7 @@ import { createContext } from "react";
 
 
 export interface IVideo{
-    src: string;
+    img: string;
     title: string;
     description: string;
     avatar?: string;

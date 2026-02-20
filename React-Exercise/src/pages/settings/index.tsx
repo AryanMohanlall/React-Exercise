@@ -10,10 +10,10 @@ const Settings: React.FC = () => {
   const { styles } = useStyles();
   const [updateForm] = Form.useForm();
   const [deleteForm] = Form.useForm();
+  const [createForm] = Form.useForm();
   
   const { videos } = useVideoState();
-  const { updateVideo } = useVideoActions();
-  const { deleteVideo } = useVideoActions();
+  const { updateVideo, deleteVideo, postVideo } = useVideoActions();
 
   const onFinishUpdate = (values: any) => {
     const { videoId, property, value } = values;
@@ -57,6 +57,24 @@ const Settings: React.FC = () => {
       message.success(`Deleted video successfully!`);
       deleteForm.resetFields();
   }
+
+  const onFinishCreate = (values: any) => {
+    const { videoLink, videoTitle, videoDescription, videoThumbnail } = values;
+
+    const newVideo = {
+      id: `video-${Date.now()}`,
+      link: videoLink,
+      title: videoTitle,
+      description: videoDescription,
+      img: videoThumbnail,
+    };
+
+    postVideo(newVideo);
+    message.success('Video created successfully!');
+    createForm.resetFields();
+
+  }
+
 
   return (
     <div className={styles.container}>
@@ -135,6 +153,56 @@ const Settings: React.FC = () => {
             </Button>
           </Form.Item>
       </Form>
+      </Card>
+
+      <Card className={styles.card}>
+        <Title level={3} style={{ color: '#fff', textAlign: 'center', marginBottom: 30 }}>
+          Create Video
+          </Title>
+
+          <Form  form={createForm} layout="vertical" onFinish={onFinishCreate} requiredMark={false}>
+            <Form.Item
+              label={<span className={styles.formLabel}>Video Link</span>}
+              name="videoLink"
+              rules={[{ required: true, message: 'Please input a Video Link' }]}
+            >
+              <Input placeholder="Enter video link" />
+            </Form.Item>
+
+            <Form.Item
+              label={<span className={styles.formLabel}>Video Title</span>}
+              name="videoTitle"
+              rules={[{ required: true, message: 'Please input a Video Title' }]}
+            >
+              <Input placeholder="Enter video title" />
+            </Form.Item>
+
+            <Form.Item
+              label={<span className={styles.formLabel}>Video Description</span>}
+              name="videoDescription"
+              rules={[{ required: true, message: 'Please input a Video Description' }]}
+            >
+              <Input placeholder="Enter video description" />
+            </Form.Item>
+
+            <Form.Item
+              label={<span className={styles.formLabel}>Video Thumbnail URL</span>}
+              name="videoThumbnail"
+              rules={[{ required: true, message: 'Please input a Video Thumbnail URL' }]}
+            >
+              <Input placeholder="Enter video thumbnail URL" />
+            </Form.Item>
+
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit" block className={styles.submitBtn} icon={<SaveOutlined />}>
+                Create
+              </Button>
+            </Form.Item>
+
+
+          </Form>
+
       </Card>
     </div>
   );

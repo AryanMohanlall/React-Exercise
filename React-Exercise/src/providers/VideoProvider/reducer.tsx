@@ -11,7 +11,10 @@ export const videoReducer = handleActions<IVideoStateContext, any>(
         }),
         [VideoActionEnums.postVideoSuccess]: (state, action: Action<IVideoStateContext>) => ({
             ...state,
-            ...action.payload
+            loading: false,
+            success: true,
+            error: false,
+            videos: [...(state.videos || []), action.payload.video]
         }),
         [VideoActionEnums.postVideoError]: (state, action: Action<IVideoStateContext>) => ({
             ...state,
