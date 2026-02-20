@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Row, Col, Spin, Empty } from 'antd';
 import { useVideoState, useVideoActions } from '../../providers/VideoProvider';
 import VideoCard from '../../components/video/';
+import Layout from '../../layouts/video';
 
 const Home = () => {
   const { videos, loading, error, video } = useVideoState();
@@ -17,6 +18,7 @@ const Home = () => {
   if (error) return <div style={{ color: 'white', textAlign: 'center' }}>Error loading videos.</div>;
 
   return (
+    <Layout>
     <div style={{ padding: '20px' }}>
       {video && (
         <div style={{ marginBottom: '20px' }}>
@@ -42,6 +44,7 @@ const Home = () => {
         )}
       </Row>
     </div>
+    </Layout>
   );
 };
 
